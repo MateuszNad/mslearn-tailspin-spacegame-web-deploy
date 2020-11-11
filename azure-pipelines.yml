@@ -77,7 +77,8 @@ stages:
   dependsOn: 'Build'
   jobs:
     - deployment: Deploy
-      pool: 'ubuntu-18.04'
+      pool:
+        vmName: 'ubuntu-18.04'
       environment: dev
 
       variables:
