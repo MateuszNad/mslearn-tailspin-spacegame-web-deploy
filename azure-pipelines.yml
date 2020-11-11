@@ -94,6 +94,6 @@ stages:
                 displayName: 'Azure App Service Deploy: website'
                 inputs:
                   appType: 'webAppLinux'
-                  azureSubscription: 'ToOnlyRg'
+                  azureSubscription: 'OnlyToRg'
                   appName: '$(WebAppName)'
                   package: '$(Pipeline.Workspace)/drop/$(buildConfiguration)/*.zip'
