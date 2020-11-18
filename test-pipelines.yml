@@ -10,13 +10,14 @@ pool:
   vmImage: 'ubuntu-latest'
 
 jobs:
-  - job: 
+  - job: CreateFile
     steps: 
       - pwsh: |
           Write-Output "Test"
           "Test" | Out-File .\Test.txt
     
   - job: 
+    dependsOn: CreateFile
     steps:
       - pwsh: |
           Get-ChildItem .\
