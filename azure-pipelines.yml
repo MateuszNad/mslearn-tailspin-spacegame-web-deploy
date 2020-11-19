@@ -87,7 +87,7 @@ stages:
               azureSubscription: 'Resource Manager - Tailspin - Space Game'
               appName: '$(WebAppNameDev)'
               appType: webAppLinux
-              package: '$(Pipeline.Workspace)/drop/$(buildConfiguration)/*.zip'
+              package: '$(Pipeline.Workspace)/drop/$(buildConfiguration)/Tailspin.SpaceGame.Web.zip'
 
           - task: AzureFunctionApp@1
             displayName: 'Azure Function Deploy: leaderboard'
@@ -102,7 +102,7 @@ stages:
             displayName: 'Update web app settings'
             inputs:
               azureSubscription: 'Resource Manager - Tailspin - Space Game'
-              appName: $(WebAppName)
+              appName: '$(WebAppNameDev)'
               resourceGroupName: $(ResourceGroupName)
               appSettings: |
                 [
@@ -114,60 +114,60 @@ stages:
                 ]
 
 
-- stage: 'Test'
-  displayName: 'Deploy to the test environment'
-  dependsOn: Dev
-  jobs:
-  - deployment: Deploy
-    pool:
-      vmImage: 'ubuntu-18.04'
-    environment: test
-    variables:
-    - group: 'Release'
-    strategy:
-      runOnce:
-        deploy:
-          steps:
-          - download: current
-            artifact: drop
-          - task: AzureWebApp@1
-            displayName: 'Azure App Service Deploy: website'
-            inputs:
-              azureSubscription: 'Resource Manager - Tailspin - Space Game'
-              appName: '$(WebAppNameTest)'
-              package: '$(Pipeline.Workspace)/drop/$(buildConfiguration)/*.zip'
+# - stage: 'Test'
+#   displayName: 'Deploy to the test environment'
+#   dependsOn: Dev
+#   jobs:
+#   - deployment: Deploy
+#     pool:
+#       vmImage: 'ubuntu-18.04'
+#     environment: test
+#     variables:
+#     - group: 'Release'
+#     strategy:
+#       runOnce:
+#         deploy:
+#           steps:
+#           - download: current
+#             artifact: drop
+#           - task: AzureWebApp@1
+#             displayName: 'Azure App Service Deploy: website'
+#             inputs:
+#               azureSubscription: 'Resource Manager - Tailspin - Space Game'
+#               appName: '$(WebAppNameTest)'
+#               package: '$(Pipeline.Workspace)/drop/$(buildConfiguration)/*.zip'
 
-- stage: 'Staging'
-  displayName: 'Deploy to the staging environment'
-  dependsOn: Test
-  jobs:
-  - deployment: Deploy
-    pool:
-      vmImage: 'ubuntu-18.04'
-    environment: staging
-    variables:
-    - group: 'Release'
-    strategy:
-      runOnce:
-        deploy:
-          steps:
-          - download: current
-            artifact: drop
-          - task: AzureWebApp@1
-            displayName: 'Azure App Service Deploy: website'
-            inputs:
-              azureSubscription: 'Resource Manager - Tailspin - Space Game'
-              appName: '$(WebAppNameStaging)'
-              deployToSlotOrASE: true
-              package: '$(Pipeline.Workspace)/drop/$(buildConfiguration)/*.zip'
-              slotName: 'swap'
-              resourceGroupName: 'tailspin-space-game-rg'
-          - task: AzureAppServiceManage@0
-            displayName: 'Swap deployment slots'
-            inputs:
-              azureSubscription: 'Resource Manager - Tailspin - Space Game'
-              resourceGroupName: 'tailspin-space-game-rg'
-              WebAppName: '$(WebAppNameStaging)'
-              SourceSlot: 'swap'
-              TargetSlot: 'production'
-              Action: Swap Slots
+# - stage: 'Staging'
+#   displayName: 'Deploy to the staging environment'
+#   dependsOn: Test
+#   jobs:
+#   - deployment: Deploy
+#     pool:
+#       vmImage: 'ubuntu-18.04'
+#     environment: staging
+#     variables:
+#     - group: 'Release'
+#     strategy:
+#       runOnce:
+#         deploy:
+#           steps:
+#           - download: current
+#             artifact: drop
+#           - task: AzureWebApp@1
+#             displayName: 'Azure App Service Deploy: website'
+#             inputs:
+#               azureSubscription: 'Resource Manager - Tailspin - Space Game'
+#               appName: '$(WebAppNameStaging)'
+#               deployToSlotOrASE: true
+#               package: '$(Pipeline.Workspace)/drop/$(buildConfiguration)/*.zip'
+#               slotName: 'swap'
+#               resourceGroupName: 'tailspin-space-game-rg'
+#           - task: AzureAppServiceManage@0
+#             displayName: 'Swap deployment slots'
+#             inputs:
+#               azureSubscription: 'Resource Manager - Tailspin - Space Game'
+#               resourceGroupName: 'tailspin-space-game-rg'
+#               WebAppName: '$(WebAppNameStaging)'
+#               SourceSlot: 'swap'
+#               TargetSlot: 'production'
+#               Action: Swap Slots
