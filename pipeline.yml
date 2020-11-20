@@ -11,7 +11,7 @@ stages:
       vmName: 'ubuntu-latest'
     jobs:
       - job:
-        dependsOn: 'zadanie 1'
+        displayName: 'zadanie 1'
         steps:
           - powershell: |
               Write-Output 'zadanie 1'
