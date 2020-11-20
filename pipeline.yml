@@ -4,15 +4,24 @@ trigger:
 variables:
   powershell: 'true'
 
-stages:
-  - stage: etap
-    displayName: 'build'
-    pool:
-      vmName: 'ubuntu-latest'
-    jobs:
-      - job:
-        displayName: 'zadanie 1'
-        steps:
-          - powershell: |
-              Write-Output 'zadanie 1'
-          - pwsh: Write-Output 'zadanie 2'
+pool:
+  vmName: 'windows-latest'
+
+jobs:
+  - job:
+    dependsOn: '1job'
+    steps:
+      - powershell: 'Write-Output'
+
+# stages:
+#   - stage: etap
+#     displayName: 'build'
+#     pool:
+#       vmName: 'ubuntu-latest'
+#     jobs:
+#       - job:
+#         displayName: 'zadanie 1'
+#         steps:
+#           - powershell: |
+#               Write-Output 'zadanie 1'
+#           - pwsh: Write-Output 'zadanie 2'
