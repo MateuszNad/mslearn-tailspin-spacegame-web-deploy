@@ -9,7 +9,7 @@ pool:
 
 jobs:
   - job:
-    dependsOn: '1job'
+    displayName: '1job'
     steps:
       - powershell: 'Write-Output'
 
