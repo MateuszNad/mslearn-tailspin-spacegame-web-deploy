@@ -5,7 +5,7 @@ variables:
   powershell: 'true'
 
 stages:
-  - stage: etap np. build
+  - stage: etap
     displayName: 'build'
     pool:
       vmName: 'ubuntu-latest'
